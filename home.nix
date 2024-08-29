@@ -10,27 +10,6 @@
 		TERMINAL = "kitty";
 	};
 
-	# Configuración de aplicaciones predeterminadas
-	# xdg.mimeApps.enable = true;
-	# xdg.mimeApps.defaultApplications = {
-	# "text/html" = "google-chrome.desktop";
-	# "x-scheme-handler/http" = "google-chrome.desktop";
-	# "x-scheme-handler/https" = "google-chrome.desktop";
-	# "x-scheme-handler/about" = "google-chrome.desktop";
-	# "x-scheme-handler/unknown" = "google-chrome.desktop";
-	# "application/pdf" = "google-chrome.desktop";
-	# "image/*" = "org.gnome.eog.desktop";
-	# "video/*" = "vlc.desktop";
-	# "audio/*" = "vlc.desktop";
-	# 	"text/plain" = "kitty.desktop";
-	# # 	# "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "libreoffice-writer.desktop";
-	# # 	# "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "libreoffice-calc.desktop";
-	# # 	# "application/vnd.openxmlformats-officedocument.presentationml.presentation" = "libreoffice-impress.desktop";
-	# # 	# "x-scheme-handler/mailto" = "google-chrome.desktop";
-	# # 	# "image/jpeg" = "gimp.desktop";
-	# # 	# "image/png" = "gimp.desktop";
-	# };
-
 	# GNOME config
 	dconf.settings = {
 		"org/gnome/desktop/interface" = {
