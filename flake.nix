@@ -8,8 +8,8 @@
 
 		home-manager.url = "github:nix-community/home-manager/master"; # release-24.05"
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
-		
-    		gnomeNixpkgs.url = "github:NixOS/nixpkgs/gnome";
+
+		gnomeNixpkgs.url = "github:NixOS/nixpkgs/gnome";
 	};
 
 	outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-stable, home-manager, gnomeNixpkgs, ... }@inputs: {
@@ -33,8 +33,8 @@
 					{
 						nixpkgs.overlays = [
 							(self: super: {
-							 gnome = gnomeNixpkgs.legacyPackages.x86_64-linux.gnome;
-							 })
+								gnome = gnomeNixpkgs.legacyPackages.x86_64-linux.gnome;
+							})
 						];
 					}
 					# Import configuration.nix
@@ -48,7 +48,7 @@
 						home-manager.useUserPackages = true;
 						home-manager.users.poke = import ./home.nix;
 						# Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-          					home-manager.extraSpecialArgs = { inherit inputs; };
+						home-manager.extraSpecialArgs = { inherit inputs; };
 					}
 
 					# This module works the same as the `specialArgs` parameter we used above

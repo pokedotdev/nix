@@ -48,16 +48,16 @@
 		# gnome-console
 		xterm
 	]) ++ (with pkgs.gnome; [
-		# gnome-music
-		gnome-contacts
-		# evince # document viewer
-		# gnome-characters
-		tali # poker game
-		iagno # go game
-		hitori # sudoku game
-		atomix # puzzle game
-	]);
-	
+			# gnome-music
+			gnome-contacts
+			# evince # document viewer
+			# gnome-characters
+			tali # poker game
+			iagno # go game
+			hitori # sudoku game
+			atomix # puzzle game
+		]);
+
 	# Resolver el conflicto de SSH askPassword with KDE 6
 	programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 	# programs.ssh.askPassword = lib.mkForce "${pkgs.plasma5Packages.ksshaskpass}/bin/ksshaskpass";
@@ -178,7 +178,7 @@
 		# inputs.helix.packages."${pkgs.system}".helix
 
 		# programs
-    	vmware-workstation
+		vmware-workstation
 		wine # 32 bits
 		wine64 # 64 bits
 	];
@@ -197,19 +197,19 @@
 		jetbrains-mono
 		(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
 	];
-	
+
 	# Default shell
 	programs.zsh.enable = true;
 	users.defaultUserShell = pkgs.zsh;
 	environment.shells = with pkgs; [ zsh ];
-	
+
 	# remove extras like: java
 	programs.steam = {
 		enable = true;
 		remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
 		dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 	};
-	
+
 	# Some programs need SUID wrappers, can be configured further or are
 	# started in user sessions.
 	# programs.mtr.enable = true;
