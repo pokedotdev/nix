@@ -1,4 +1,4 @@
-{ self, config, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
 	imports = [
@@ -15,7 +15,7 @@
 		NPM_CONFIG_PREFIX="${config.home.homeDirectory}/.node_modules";
 	};
 
-	# GNOME config
+	# GNOME settings
 	dconf.settings = {
 		"org/gnome/desktop/background" = {
 			picture-uri = "file://${config.home.homeDirectory}/.wallpaper";
@@ -27,7 +27,7 @@
 			text-scaling-factor = 1.0;
 			accent-color = "slate";
 			color-scheme = "prefer-dark";
-			monospace-font-name = "JetBrainsMono Nerd Font 11";
+			monospace-font-name = "monospace 12";
 			clock-format = "24h";
 			clock-show-date = true;
 			clock-show-seconds = true;
@@ -220,9 +220,7 @@
 	programs.kitty = {
 		enable = true;
 		theme = "Tokyo Night";
-		font = {
-			name = "JetBrainsMono Nerd Font";
-		};
+		font.name = "monospace";
 		settings = {
 			font_size = "12.5";
 			font_features = true;
@@ -243,8 +241,8 @@
 		return {
 			window_decorations = "RESIZE",
 			window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
-			font = wezterm.font("JetBrainsMono Nerd Font"),
-			font_size = 10.0,
+			font = wezterm.font("monospace"),
+			font_size = 14.0,
 			color_scheme = "Tokyo Night",
 			hide_tab_bar_if_only_one_tab = true,
 			default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
@@ -291,7 +289,7 @@
 		syntaxHighlighting.enable = true;
 
 		shellAliases = {
-			update = "bash ~/nix/update_nixos_hardware.sh";
+			up = "bash ~/nix/update_nixos_hardware.sh";
 
 			cat = "bat --theme=base16 --style=changes,numbers";
 			v = "nvim";
@@ -328,7 +326,7 @@
 		};
 	};
 	home.file."nix/update_nixos_hardware.sh" = {
-		source = ./update_nixos_hardware.sh;
+		source = ../update_nixos_hardware.sh;
 		executable = true;
 	};
 
@@ -350,7 +348,7 @@
 			"[typescriptreact]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
 			"breadcrumbs.enabled" = false;
 			"editor.defaultFormatter" = "esbenp.prettier-vscode";
-			"editor.fontFamily" = "'JetBrainsMono NF', Menlo, Monaco, 'Courier New', monospace";
+			"editor.fontFamily" = "monospace";
 			"editor.fontSize" = 16;
 			"editor.formatOnSave" = true;
 			"editor.glyphMargin" = false;
