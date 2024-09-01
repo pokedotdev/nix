@@ -30,13 +30,15 @@
 					};
 				};
 				modules = [
-					{
-						nixpkgs.overlays = [
-							(self: super: {
-								gnome = gnomeNixpkgs.legacyPackages.x86_64-linux.gnome;
-							})
-						];
-					}
+					# Lastest gnome version
+					# {
+					# 	nixpkgs.overlays = [
+					# 		(self: super: {
+					# 			gnome = gnomeNixpkgs.legacyPackages.x86_64-linux.gnome;
+					# 		})
+					# 	];
+					# }
+					
 					# Import configuration.nix
 					./configuration.nix
 
@@ -46,7 +48,7 @@
 					{
 						home-manager.useGlobalPkgs = true;
 						home-manager.useUserPackages = true;
-						home-manager.users.poke = import ./home.nix;
+						home-manager.users.poke = import ./home;
 						# Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
 						home-manager.extraSpecialArgs = { inherit inputs; };
 					}

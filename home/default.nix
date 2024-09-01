@@ -1,6 +1,10 @@
-{ config, pkgs, ... }:
+{ self, config, pkgs, ... }:
 
 {
+	imports = [
+		./modules/fonts.nix
+	];
+
 	home.username = "poke";
 	home.homeDirectory = "/home/poke";
 
@@ -8,34 +12,49 @@
 		EDITOR = "nvim";
 		BROWSER = "google-chrome";
 		TERMINAL = "kitty";
+		NPM_CONFIG_PREFIX="${config.home.homeDirectory}/.node_modules";
 	};
 
 	# GNOME config
 	dconf.settings = {
+		"org/gnome/desktop/background" = {
+			picture-uri = "file://${config.home.homeDirectory}/.wallpaper";
+			picture-uri-dark = "file://${config.home.homeDirectory}/.wallpaper";
+			picture-options = "zoom";
+		};
 		"org/gnome/desktop/interface" = {
-			scaling-factor = 2;
+			scaling-factor = 1;
 			text-scaling-factor = 1.0;
+			accent-color = "slate";
 			color-scheme = "prefer-dark";
 			monospace-font-name = "JetBrainsMono Nerd Font 11";
+			clock-format = "24h";
+			clock-show-date = true;
+			clock-show-seconds = true;
 		};
 		"org/gnome/mutter" = {
 			edge-tiling = false;
-			experimental-features = [ "scale-monitor-framebuffer" "x11-randr-fractional-scaling" ];
+			experimental-features = [ 
+				"scale-monitor-framebuffer"
+				"fractional-scale-mode"
+				"xwayland-native-scaling"
+			];
 		};
 		"org/gnome/desktop/peripherals/mouse" = {
 			accel-profile = "flat";
 		};
 		"org/gnome/desktop/interface" = {
-			enable-hot-corners = false;  # Esto desactiva explícitamente los hot corners
+			enable-hot-corners = false;  # disable hot corners
 		};
 		"org/gnome/desktop/wm/preferences" = {
-			button-layout = "";  # Esto quita todos los botones de las ventanas
+			button-layout = "";  # no window buttons
+			resize-with-right-button = true;
 		};
 		"org/gnome/monitor/0" = {
-			scale = 1.5;  # Ejemplo de fractional scaling (150%)
+			scale = 1.5;  # fractional scaling
 		};
 
-		# Configuración de atajos de teclado para Kitty
+		# Keybindings
 		"org/gnome/settings-daemon/plugins/media-keys" = {
 			custom-keybindings = [
 				"/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
@@ -45,6 +64,36 @@
 			name = "Launch Kitty";
 			command = "kitty";
 			binding = "<Super>t";
+		};
+		"org/gnome/desktop/wm/keybindings" = {
+			close = [ "<Super>q" ];
+		};
+
+		# Apps
+		"org/gnome/nautilus/icon-view" = {
+			default-zoom-level = "small-plus";
+		};
+		"org/gnome/nautilus/list-view" = {
+			default-zoom-level = "medium";
+		};
+
+		# Extensions
+		"org/gnome/shell" = {
+			disable-user-extensions = false;
+			enabled-extensions = [
+				"valent@andyholmes.github.io"
+				"just-perfection-desktop@just-perfection"
+				"disable-workspace-animation@ethnarque"
+				"middleclickclose@paolo.tranquilli.gmail.com"
+			];
+		};
+		"org/gnome/shell/extensions/just-perfection" = {
+			dash = false;
+			panel = false;
+			panel-in-overview = true;
+			search = false;
+			workspace = true;
+			workspace-switcher-size = 12;
 		};
 	};
 
@@ -107,18 +156,20 @@
 		#pciutils # lspci
 		#usbutils # lsusb
 
-
 		# Desktop environment things
+		dconf-editor
 		gnome-tweaks
 		gnomeExtensions.valent
-		gnomeExtensions.night-theme-switcher
-		gnomeExtensions.emoji-copy
+		gnomeExtensions.just-perfection
+		gnomeExtensions.disable-workspace-animation
+		gnomeExtensions.middle-click-to-close-in-overview
 
 		# Tools
 		dconf2nix
 		devenv # reproducible and composable developer environments
 		pgcli # postgres command-line interface
 		usql # universal command-line interface for sql databases
+		dbmate # database migration tool
 		# wgnord
 		zoxide
 		# Keyboard tools
@@ -132,8 +183,9 @@
 		vlc
 		discord
 		obs-studio
-		zed-editor
+		# zed-editor
 		# davinci-resolve
+		audacity
 
 		# Entertainment
 		stremio
@@ -172,7 +224,7 @@
 			name = "JetBrainsMono Nerd Font";
 		};
 		settings = {
-			font_size = "10";
+			font_size = "12.5";
 			font_features = true;
 			adjust_line_height = "110%";
 			remember_window_size = true;
@@ -182,6 +234,25 @@
 			copy_on_select = true;
 			clipboard_control = "write-clipboard read-clipboard write-primary read-primary";
 		};
+	};
+
+	programs.wezterm = {
+		enable = true;
+		enableZshIntegration = true;
+		extraConfig = ''
+		return {
+			window_decorations = "RESIZE",
+			window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
+			font = wezterm.font("JetBrainsMono Nerd Font"),
+			font_size = 10.0,
+			color_scheme = "Tokyo Night",
+			hide_tab_bar_if_only_one_tab = true,
+			default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
+			keys = {
+				{key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
+			}
+		}
+		'';
 	};
 
 	# starship - an customizable prompt for any shell

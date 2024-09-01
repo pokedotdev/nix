@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
 	imports = [
@@ -28,10 +28,26 @@
 	# X11 windowing system.
 	services.xserver = {
 		enable = true;
-		displayManager.gdm.enable = true;
+		displayManager = {
+			gdm.enable = true;
+			gdm.wayland = true;
+		};
 		desktopManager = {
-			gnome.enable = true;
+			gnome = {
+				enable = true;
+				extraGSettingsOverridePackages = [ pkgs.gnome.mutter ];
+				extraGSettingsOverrides = ''
+					[org.gnome.mutter]
+					experimental-features=['scale-monitor-framebuffer']
+				'';
+			};
 			# plasma6.enable = false;
+		};
+	};
+	services.displayManager = {
+		autoLogin = {
+			enable = true;
+			user = "poke";
 		};
 	};
 
@@ -46,17 +62,18 @@
 		# totem # video player
 		gnome-terminal
 		# gnome-console
-		xterm
 	]) ++ (with pkgs.gnome; [
-			# gnome-music
-			gnome-contacts
-			# evince # document viewer
-			# gnome-characters
-			tali # poker game
-			iagno # go game
-			hitori # sudoku game
-			atomix # puzzle game
-		]);
+		gnome-contacts
+		tali # poker game
+		iagno # go game
+		hitori # sudoku game
+		atomix # puzzle game
+		# gnome-music
+		# evince # document viewer
+		# gnome-characters
+	# ]) ++ (with nixpkgs-stable; [
+	# 	gnome.gnome-online-miners
+	]);
 
 	# Resolver el conflicto de SSH askPassword with KDE 6
 	programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
@@ -150,6 +167,7 @@
 		gcc
 		clang
 		# ---
+		zulu17 # java
 		rustup
 		go
 		lua
@@ -163,19 +181,6 @@
 		# python310.pkgs.requests
 		# python310.pkgs.beautifulsoup4
 		# python3.pkgs.tk
-
-		# Dev tools
-		dbmate
-
-		# Desktop environment things
-		# gnome-tweaks
-		# gnomeExtensions.valent
-		# gnomeExtensions.pop-shell
-		# gnomeExtensions.unite
-		# ulauncher # launcher
-
-		# Here, the helix package is installed from the helix input data source
-		# inputs.helix.packages."${pkgs.system}".helix
 
 		# programs
 		vmware-workstation
@@ -193,10 +198,10 @@
 		#shell = pkgs.zsh;
 	};
 
-	fonts.packages = with pkgs; [
-		jetbrains-mono
-		(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-	];
+	# fonts.packages = with pkgs; [
+	# 	jetbrains-mono
+	# 	(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+	# ];
 
 	# Default shell
 	programs.zsh.enable = true;
